@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هانوي 🇻🇳</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0f1a;font-family:'Noto Kufi Arabic','Cairo',sans-serif}
+::-webkit-scrollbar{display:none}
+button{cursor:pointer;font-family:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const INFO=[
+  {id:"visa",icon:"🛂",title:"الفيزا",color:"#1e3a5f",accent:"#4e9af1",items:[
+    {label:"هل تحتاج فيزا؟",value:"نعم — E-Visa إلكترونية",warn:true},
+    {label:"الموقع الرسمي",value:"evisa.xuatnhapcanh.gov.vn"},
+    {label:"مدة المعالجة",value:"5–10 أيام عمل"},
+    {label:"الصلاحية",value:"90 يوم"},
+    {label:"الرسوم",value:"~25 دولار"},
+    {label:"شرط الجواز",value:"ساري 6 أشهر على الأقل",warn:true},
+  ]},
+  {id:"money",icon:"💵",title:"العملة والكاش",color:"#1a3a2a",accent:"#4ade80",items:[
+    {label:"العملة",value:"دونغ فيتنامي (VND)"},
+    {label:"سعر الصرف",value:"١ ريال ≈ ٦٫٥٠٠ دونغ"},
+    {label:"الكاش ضروري؟",value:"نعم — أسواق ومطاعم شعبية",warn:true},
+    {label:"أفضل ATM",value:"VPBank — بدون رسوم"},
+    {label:"حد السحب",value:"١٠,٠٠٠,٠٠٠ دونغ (~400$)"},
+    {label:"تحذير",value:"نبّه بنكك قبل السفر",warn:true},
+  ]},
+  {id:"sim",icon:"📱",title:"شريحة الجوال",color:"#2d1b4e",accent:"#a78bfa",items:[
+    {label:"أفضل خيار",value:"eSIM قبل السفر"},
+    {label:"أو من المطار",value:"كيوسكات Viettel/Vinaphone"},
+    {label:"السعر",value:"5–15 دولار"},
+    {label:"أفضل شبكة",value:"Viettel — أقوى تغطية"},
+    {label:"شرط",value:"جواز السفر مطلوب"},
+  ]},
+  {id:"transport",icon:"🚖",title:"التنقل",color:"#3a1f00",accent:"#fb923c",items:[
+    {label:"المطار للفندق",value:"Grab ~300,000 VND | 45 دقيقة"},
+    {label:"داخل المدينة",value:"Grab أو مشي"},
+    {label:"تجنب",value:"تاكسي عشوائي",warn:true},
+    {label:"دراجة هوائية",value:"~50,000 VND/يوم"},
+  ]},
+  {id:"general",icon:"ℹ️",title:"معلومات عامة",color:"#1a1a2e",accent:"#e879f9",items:[
+    {label:"فارق التوقيت",value:"هانوي +4 ساعات عن الرياض"},
+    {label:"اللغة",value:"فيتنامية + إنجليزية في السياحة"},
+    {label:"الأمان",value:"آمنة جداً"},
+    {label:"الكهرباء",value:"220V — متوافق"},
+    {label:"مياه الشرب",value:"معبأة فقط",warn:true},
+    {label:"الإسعاف",value:"115"},
+  ]},
+];
+
+const DAYS=[
+  {date:"الأحد ١٨ مايو",label:"يوم الوصول",arrival:true,
+   weather:{temp:"29–34°C",rain:"56%",icon:"🌦️",tip:"حر رطب — شيل مظلة دايم"},
+   acts:[
+    {time:"14:00",type:"travel",icon:"✈️",title:"وصول مطار نوي باي",desc:"اشتري SIM من الكيوسك، ثم Grab للفيرمونت (~45 دقيقة | ~300,000 VND)"},
+    {time:"15:30",type:"hotel",icon:"🏨",title:"فيرمونت سوفيتيل ⭐⭐⭐⭐⭐",desc:"تشيك إن، ارتاح وتجهّز"},
+    {time:"18:00",type:"food",icon:"🥘",title:"عشاء: Zaynab Restaurant",desc:"فيتنامي حلال | بيف فو + سبرينج رول | ١٢ Hang Luoc جنب مسجد Al Noor"},
+    {time:"20:00",type:"explore",icon:"🌊",title:"تمشية بحيرة Hoan Kiem الليلية",desc:"منظر مضاء رائع — أجمل وقت للبحيرة"},
+  ]},
+  {date:"الاثنين ١٩ مايو",label:"يوم الطبيعة والكافيهات",
+   weather:{temp:"28–34°C",rain:"50%",icon:"⛅",tip:"ابدأ بدري — ذروة الحر ٢–٥ عصر"},
+   acts:[
+    {time:"07:00",type:"food",icon:"☕",title:"Egg Coffee — Café Giang",desc:"أشهر قهوة في هانوي منذ 1946 | 39 Nguyen Huu Huan"},
+    {time:"08:30",type:"explore",icon:"🚴",title:"جولة دراجة في الحي القديم",desc:"استأجر دراجة واكتشف ٣٦ شارعاً"},
+    {time:"10:30",type:"explore",icon:"🌿",title:"بحيرة West Lake (Ho Tay)",desc:"٥٠٠ هكتار | قارب + دراجة | غروب خرافي"},
+    {time:"12:30",type:"food",icon:"🍛",title:"غداء: Dalcheeni",desc:"هندي فاخر حلال | حي تاي هو"},
+    {time:"14:30",type:"rest",icon:"🌡️",title:"استراحة ذروة الحر",desc:"مسبح الفيرمونت أو سبا"},
+    {time:"16:30",type:"explore",icon:"🎭",title:"عرض دمى الماء",desc:"Thang Long Theatre | احجز مسبقاً"},
+    {time:"19:00",type:"food",icon:"🍖",title:"عشاء: Tandoor Restaurant",desc:"هندي أصيل حلال منذ ١٩٩٦ | Old Quarter"},
+  ]},
+  {date:"الثلاثاء ٢٠ مايو",label:"يوم الأسواق والحي القديم",
+   weather:{temp:"29–35°C",rain:"55%",icon:"🌦️",tip:"أمطار بعد العصر — نشاطك الخارجي الصبح"},
+   acts:[
+    {time:"07:30",type:"explore",icon:"🌅",title:"صباح بحيرة Hoan Kiem",desc:"جو لطيف — رياضة محلية ومنظر رائع"},
+    {time:"09:00",type:"explore",icon:"🛍️",title:"سوق Dong Xuan",desc:"أكبر أسواق هانوي | كل شيء بأسعار محلية"},
+    {time:"11:00",type:"explore",icon:"🏘️",title:"جولة ٣٦ شارع الحي القديم",desc:"حرير، فضة، ورق، نحاس — تسوق وتصوير"},
+    {time:"12:30",type:"food",icon:"🥙",title:"غداء: D'Lions Restaurant",desc:"ماليزي-سنغافوري حلال | 92 Le Duan | Nasi Lemak + كاري"},
+    {time:"14:30",type:"explore",icon:"☕",title:"The Note Coffee",desc:"سقف مليان ملاحظات ملونة | إنستاغرامي"},
+    {time:"16:00",type:"explore",icon:"🌳",title:"شارع Phan Dinh Phung",desc:"أجمل شارع في هانوي | أشجار عملاقة"},
+    {time:"18:30",type:"explore",icon:"🌇",title:"Grand World Ocean City",desc:"قناة بندقية + جسر ملكي + عروض ليلية"},
+    {time:"20:00",type:"food",icon:"🫕",title:"عشاء: Batavia Restaurant",desc:"إندونيزي-ماليزي حلال | Old Quarter"},
+  ]},
+  {date:"الأربعاء ٢١ مايو",label:"يوم المتاحف والطبيعة",
+   weather:{temp:"28–33°C",rain:"52%",icon:"⛅",tip:"ابدأ بالهواء الطلق ثم المتاحف"},
+   acts:[
+    {time:"08:00",type:"food",icon:"☕",title:"Tranquil Books & Coffee",desc:"كافيه هادئ + مكتبة"},
+    {time:"09:30",type:"explore",icon:"🏞️",title:"حديقة Thong Nhat Park",desc:"بحيرة + طبيعة + قوارب + دراجات"},
+    {time:"11:30",type:"explore",icon:"🏛️",title:"متحف الإثنوغرافيا",desc:"أحسن متحف في هانوي | ٥٤ قبيلة فيتنامية"},
+    {time:"13:30",type:"food",icon:"🍱",title:"غداء: Aalishan Restaurant",desc:"هندي-فيتنامي حلال | ديكور فريد"},
+    {time:"15:00",type:"explore",icon:"🏛️",title:"متحف المرأة الفيتنامية",desc:"مكيّف | ثقافة مميزة"},
+    {time:"17:00",type:"explore",icon:"🕌",title:"مسجد Al Noor",desc:"أكبر مساجد هانوي | Hang Luoc"},
+    {time:"19:00",type:"food",icon:"🍢",title:"عشاء: Mr. Kebab Halal",desc:"كباب حلال طازج | مفتوح متأخر | Hang Bo"},
+  ]},
+  {date:"الخميس ٢٢ مايو",label:"رحلة يوم — Ninh Binh",
+   weather:{temp:"29–35°C",rain:"58%",icon:"🌦️",tip:"خذ معطف مطر — الطبيعة تستاهل"},
+   acts:[
+    {time:"07:00",type:"travel",icon:"🚌",title:"رحلة Ninh Binh",desc:"~2 ساعة | سيارة خاصة ~800,000 VND"},
+    {time:"09:30",type:"explore",icon:"⛵",title:"قوارب Trang An (UNESCO)",desc:"كهوف وجبال طبيعية — تجربة لا تُنسى"},
+    {time:"11:30",type:"explore",icon:"🏔️",title:"Mua Cave — تسلّق للقمة",desc:"٥٠٠ درجة | أجمل منظر في شمال فيتنام"},
+    {time:"13:00",type:"food",icon:"🍚",title:"غداء في Ninh Binh",desc:"seafood أو vegetarian — الحلال متاح"},
+    {time:"14:30",type:"explore",icon:"🌾",title:"حقول الأرز المتدرجة",desc:"مايو = موسم ري = مرايا خضراء"},
+    {time:"16:00",type:"travel",icon:"🚌",title:"العودة لهانوي",desc:"~2 ساعة"},
+    {time:"19:00",type:"food",icon:"🍛",title:"عشاء: PK Spice Restaurant",desc:"هندي حلال | 58-2 Hang Dau"},
+    {time:"21:00",type:"explore",icon:"🛍️",title:"تسوق أخير + تجهيز الشنط",desc:"تأكد من كل شيء للسفر الفجر"},
+  ]},
+  {date:"الجمعة ٢٣ مايو",label:"يوم المغادرة",departure:true,
+   weather:{temp:"26–30°C",rain:"45%",icon:"🌙",tip:"الطيران ١:٠٠ ص — نظّم أمورك من الليل"},
+   acts:[
+    {time:"22:30",type:"hotel",icon:"🛎️",title:"تشيك آوت من الفيرمونت",desc:"اطلب Late checkout أو احفظ الشنط"},
+    {time:"23:00",type:"travel",icon:"🚖",title:"Grab للمطار",desc:"~45–60 دقيقة | ~350,000 VND | لا تتأخر"},
+    {time:"01:00",type:"travel",icon:"✈️",title:"إقلاع من نوي باي",desc:"رحلة سعيدة ومباركة! 🌙"},
+  ]},
+];
+
+const TC={travel:{bg:"#1e3a5f",ac:"#4e9af1"},hotel:{bg:"#2d1b4e",ac:"#a78bfa"},food:{bg:"#1a3a2a",ac:"#4ade80"},explore:{bg:"#3a1f00",ac:"#fb923c"},rest:{bg:"#2a1a2a",ac:"#f472b6"}};
+const REST=[
+  {n:"Zaynab Restaurant",c:"فيتنامي حلال",d:"جنب Al Noor | بيف فو رائع"},
+  {n:"D'Lions (Cosiana)",c:"ماليزي-سنغافوري",d:"92 Le Duan | Nasi Lemak"},
+  {n:"Dalcheeni",c:"هندي فاخر",d:"حي تاي هو"},
+  {n:"Tandoor",c:"هندي أصيل",d:"Old Quarter | منذ ١٩٩٦"},
+  {n:"Batavia",c:"إندونيزي-ماليزي",d:"Old Quarter"},
+  {n:"Mr. Kebab Halal",c:"كباب",d:"مفتوح متأخر"},
+  {n:"Aalishan",c:"هندي-فيتنامي",d:"ديكور فريد"},
+  {n:"PK Spice",c:"هندي حلال",d:"58-2 Hang Dau"},
+];
+const CAFES=[
+  {n:"Café Giang",d:"Egg Coffee منذ ١٩٤٦"},
+  {n:"The Note Coffee",d:"سقف ملاحظات ملونة"},
+  {n:"Tranquil Books",d:"مكتبة + كافيه هادئ"},
+  {n:"Cong Caphe",d:"ديكور عسكري ريترو"},
+];
+const PLACES=[
+  {cat:"🌊 طبيعة ومناظر",color:"#0f2a1a",ac:"#4ade80",list:[
+    {n:"بحيرة Hoan Kiem",d:"قلب المدينة | صباحاً + ليلاً | مجاني"},
+    {n:"بحيرة West Lake",d:"٥٠٠ هكتار | قارب + دراجة | غروب خرافي"},
+    {n:"Trang An (UNESCO)",d:"خليج هالونج البري | كهوف طبيعية"},
+    {n:"Mua Cave",d:"تسلّق ٥٠٠ درجة | أجمل منظر في الشمال"},
+    {n:"حقول الأرز",d:"مايو = موسم ري = مرايا خضراء"},
+    {n:"Ba Vi National Park",d:"٦٠ كم | جبال + تنزه + هواء نقي"},
+  ]},
+  {cat:"🏙️ أحياء وشوارع",color:"#1e3a5f",ac:"#4e9af1",list:[
+    {n:"الحي القديم ٣٦ شارعاً",d:"حرير، فضة، ورق — أقدم منطقة تجارية"},
+    {n:"شارع Phan Dinh Phung",d:"أجمل شارع في هانوي | أشجار عملاقة"},
+    {n:"Grand World Ocean City",d:"قناة بندقية + جسر ملكي + عروض"},
+    {n:"حي Tay Ho",d:"كافيهات راقية + مطاعم فاخرة"},
+  ]},
+  {cat:"🛍️ أسواق وتسوق",color:"#3a1f00",ac:"#fb923c",list:[
+    {n:"سوق Dong Xuan",d:"أكبر سوق مغلق | أسعار محلية"},
+    {n:"سوق الليل Hang Dao",d:"جمعة-أحد | ملابس وحرف يدوية"},
+    {n:"VinCom Center",d:"مول حديث | تكييف + مطاعم"},
+  ]},
+  {cat:"🎭 ترفيه",color:"#2d1b4e",ac:"#a78bfa",list:[
+    {n:"عرض دمى الماء",d:"Thang Long Theatre | احجز مسبقاً"},
+    {n:"متحف الإثنوغرافيا",d:"٥٤ قبيلة | مبانٍ بالهواء الطلق"},
+    {n:"VinWonders Water Park",d:"ملاهي مائية | مثالي للحر"},
+  ]},
+];
+
+const TABS=["📅 الجدول","🗺️ الأماكن","🥘 الطعام","ℹ️ معلومات"];
+
+function App(){
+  const [tab,setTab]=React.useState(0);
+  const [di,setDi]=React.useState(0);
+  const [info,setInfo]=React.useState(null);
+  const d=DAYS[di];
+  const sc=(t)=>TC[t]||TC.explore;
+
+  return(
+    <div style={{fontFamily:"'Noto Kufi Arabic','Cairo',sans-serif",background:"#0a0f1a",minHeight:"100vh",color:"#e2e8f0",direction:"rtl"}}>
+      <div style={{background:"linear-gradient(135deg,#b91c1c,#7f1d1d 40%,#0a0f1a)",padding:"20px 16px 16px",borderBottom:"1px solid #1e293b"}}>
+        <div style={{display:"flex",alignItems:"center",gap:"10px",marginBottom:"6px"}}>
+          <span style={{fontSize:"28px"}}>🇻🇳</span>
+          <div>
+            <div style={{fontSize:"20px",fontWeight:"800",color:"#fff"}}>هانوي — تايم لاين الرحلة</div>
+            <div style={{fontSize:"11px",color:"#fca5a5"}}>فيرمونت سوفيتيل ⭐⭐⭐⭐⭐ · ١٨–٢٣ مايو ٢٠٢٦</div>
+          </div>
+        </div>
+        {tab===0&&<div style={{background:"rgba(255,255,255,0.07)",borderRadius:"10px",padding:"9px 12px",display:"flex",alignItems:"center",gap:"10px",marginTop:"10px",border:"1px solid rgba(255,255,255,0.1)"}}>
+          <span style={{fontSize:"18px"}}>{d.weather.icon}</span>
+          <div style={{flex:1}}>
+            <div style={{fontSize:"12px",fontWeight:"700",color:"#fbbf24"}}>{d.weather.temp}</div>
+            <div style={{fontSize:"11px",color:"#94a3b8"}}>{d.weather.tip}</div>
+          </div>
+          <div style={{background:"#1e40af",borderRadius:"6px",padding:"3px 8px",fontSize:"10px",color:"#93c5fd",fontWeight:"700"}}>🌧️ {d.weather.rain}</div>
+        </div>}
+      </div>
+
+      <div style={{display:"flex",background:"#0f172a",borderBottom:"1px solid #1e293b"}}>
+        {TABS.map((t,i)=><button key={i} onClick={()=>setTab(i)} style={{flex:1,background:"none",border:"none",borderBottom:tab===i?"2px solid #ef4444":"2px solid transparent",color:tab===i?"#fff":"#64748b",fontSize:"11px",fontWeight:tab===i?"700":"500",padding:"10px 4px",cursor:"pointer",fontFamily:"inherit"}}>{t}</button>)}
+      </div>
+
+      {tab===0&&<>
+        <div style={{display:"flex",overflowX:"auto",gap:"6px",padding:"10px 14px",background:"#0f172a"}}>
+          {DAYS.map((dd,i)=><button key={i} onClick={()=>setDi(i)} style={{flexShrink:0,background:di===i?"linear-gradient(135deg,#b91c1c,#ef4444)":"#1e293b",border:"none",borderRadius:"10px",padding:"7px 12px",color:di===i?"#fff":"#94a3b8",fontSize:"11px",fontWeight:di===i?"700":"500",cursor:"pointer",fontFamily:"inherit"}}>
+            <div>{dd.arrival?"✈️ وصول":dd.departure?"🛫 مغادرة":`يوم ${i+1}`}</div>
+            <div style={{fontSize:"9px",opacity:0.8,marginTop:"1px"}}>{dd.date.split(" ").slice(-2).join(" ")}</div>
+          </button>)}
+        </div>
+        <div style={{padding:"12px 14px 6px"}}>
+          <div style={{fontSize:"16px",fontWeight:"800",color:"#f1f5f9"}}>{d.date}</div>
+          <div style={{display:"inline-block",background:"#1e293b",borderRadius:"6px",padding:"2px 8px",fontSize:"11px",color:"#94a3b8",marginTop:"3px"}}>{d.label}</div>
+        </div>
+        <div style={{padding:"6px 14px 20px"}}>
+          {d.acts.map((a,i)=>{const c=sc(a.type);return(
+            <div key={i} style={{display:"flex",gap:"10px",marginBottom:"10px"}}>
+              <div style={{flexShrink:0,width:"44px",textAlign:"center",paddingTop:"12px"}}>
+                <div style={{fontSize:"10px",color:"#64748b",fontWeight:"700"}}>{a.time}</div>
+              </div>
+              <div style={{flex:1,background:c.bg,border:`1px solid ${c.ac}22`,borderRight:`3px solid ${c.ac}`,borderRadius:"10px",padding:"10px 12px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:"6px",marginBottom:"3px"}}>
+                  <span style={{fontSize:"16px"}}>{a.icon}</span>
+                  <div style={{fontWeight:"700",fontSize:"13px",color:"#f1f5f9"}}>{a.title}</div>
+                </div>
+                <div style={{fontSize:"11px",color:"#94a3b8",lineHeight:"1.5"}}>{a.desc}</div>
+              </div>
+            </div>
+          );})}
+        </div>
+      </>}
+
+      {tab===1&&<div style={{padding:"14px"}}>
+        {PLACES.map((sec,si)=><div key={si} style={{background:sec.color,border:`1px solid ${sec.ac}22`,borderRadius:"12px",padding:"12px",marginBottom:"12px"}}>
+          <div style={{fontSize:"13px",fontWeight:"800",color:sec.ac,marginBottom:"10px"}}>{sec.cat}</div>
+          {sec.list.map((p,pi)=><div key={pi} style={{paddingBottom:"8px",marginBottom:"8px",borderBottom:pi<sec.list.length-1?`1px solid ${sec.ac}22`:"none"}}>
+            <div style={{fontSize:"12px",fontWeight:"700",color:"#f1f5f9"}}>{p.n}</div>
+            <div style={{fontSize:"11px",color:"#94a3b8",marginTop:"2px"}}>{p.d}</div>
+          </div>)}
+        </div>)}
+      </div>}
+
+      {tab===2&&<div style={{padding:"14px"}}>
+        <div style={{background:"#0f2a1a",border:"1px solid #166534",borderRadius:"12px",padding:"12px",marginBottom:"12px"}}>
+          <div style={{fontSize:"13px",fontWeight:"800",color:"#4ade80",marginBottom:"10px"}}>🥘 مطاعم حلال موثّقة</div>
+          {REST.map((r,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:i<REST.length-1?"1px solid #166534":"none",gap:"8px"}}>
+            <div>
+              <div style={{fontSize:"12px",fontWeight:"700",color:"#f1f5f9"}}>{r.n}</div>
+              <div style={{fontSize:"11px",color:"#86efac"}}>{r.d}</div>
+            </div>
+            <div style={{flexShrink:0,background:"#14532d",color:"#4ade80",fontSize:"10px",fontWeight:"700",borderRadius:"6px",padding:"3px 8px"}}>{r.c}</div>
+          </div>)}
+        </div>
+        <div style={{background:"#1e2a3a",border:"1px solid #1e40af",borderRadius:"12px",padding:"12px",marginBottom:"12px"}}>
+          <div style={{fontSize:"13px",fontWeight:"800",color:"#93c5fd",marginBottom:"10px"}}>☕ كافيهات مميزة</div>
+          {CAFES.map((c,i)=><div key={i} style={{paddingBottom:"8px",marginBottom:"8px",borderBottom:i<CAFES.length-1?"1px solid #1e40af":"none"}}>
+            <div style={{fontSize:"12px",fontWeight:"700",color:"#f1f5f9"}}>{c.n}</div>
+            <div style={{fontSize:"11px",color:"#93c5fd",marginTop:"2px"}}>{c.d}</div>
+          </div>)}
+        </div>
+        <div style={{background:"#2a1a0a",border:"1px solid #92400e",borderRadius:"12px",padding:"12px"}}>
+          <div style={{fontSize:"13px",fontWeight:"800",color:"#fbbf24",marginBottom:"10px"}}>💡 نصائح الأكل الحلال</div>
+          {["معظم مطاعم الحلال قرب مسجد Al Noor في Hang Luoc","KFC وماكدونالدز غير حلال في فيتنام","Seafood وvegetarian آمنان في أغلب المطاعم","اطلب من الموظف تأكيد حلال","الفيرمونت يوفر قائمة مطاعم حلال للضيوف"].map((t,i)=><div key={i} style={{display:"flex",gap:"8px",padding:"5px 0",borderBottom:i<4?"1px solid #92400e":"none"}}>
+            <span style={{color:"#fbbf24",flexShrink:0}}>•</span>
+            <div style={{fontSize:"11px",color:"#fde68a"}}>{t}</div>
+          </div>)}
+        </div>
+      </div>}
+
+      {tab===3&&<div style={{padding:"14px"}}>
+        {INFO.map((sec)=><div key={sec.id} style={{marginBottom:"10px"}}>
+          <button onClick={()=>setInfo(info===sec.id?null:sec.id)} style={{width:"100%",background:info===sec.id?sec.color:"#1e293b",border:`1px solid ${info===sec.id?sec.accent+"44":"#334155"}`,borderRadius:"10px",padding:"12px 14px",color:"#f1f5f9",fontSize:"13px",fontWeight:"700",cursor:"pointer",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+            <span>{sec.icon} {sec.title}</span>
+            <span style={{color:sec.accent,fontSize:"12px"}}>{info===sec.id?"▲":"▼"}</span>
+          </button>
+          {info===sec.id&&<div style={{background:sec.color,border:`1px solid ${sec.accent}33`,borderTop:"none",borderRadius:"0 0 10px 10px",padding:"12px 14px"}}>
+            {sec.items.map((item,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:i<sec.items.length-1?`1px solid ${sec.accent}22`:"none",gap:"10px"}}>
+              <div style={{fontSize:"11px",color:"#94a3b8",flexShrink:0,minWidth:"90px"}}>{item.label}</div>
+              <div style={{fontSize:"11px",fontWeight:"600",color:item.warn?"#fbbf24":"#f1f5f9",textAlign:"left"}}>{item.value}</div>
+            </div>)}
+          </div>}
+        </div>)}
+        <div style={{background:"#1a1a2e",border:"1px solid #4c1d95",borderRadius:"12px",padding:"12px",marginTop:"4px"}}>
+          <div style={{fontSize:"13px",fontWeight:"800",color:"#c4b5fd",marginBottom:"8px"}}>🧳 قائمة التجهيز</div>
+          {["جواز سفر (صالح 6+ أشهر) + نسخة ورقية","E-Visa مطبوعة أو على الجوال","ملابس فاتحة قطن + مظلة صغيرة","بطاقة بنك + كاش دولار","شاحن universal + محول كهرباء","دواء أساسي + واقي شمس SPF50+","تطبيق Grab محمّل مسبقاً"].map((t,i)=><div key={i} style={{display:"flex",gap:"8px",padding:"5px 0",borderBottom:i<6?"1px solid #4c1d95":"none"}}>
+            <span style={{color:"#c4b5fd",flexShrink:0}}>✓</span>
+            <div style={{fontSize:"11px",color:"#e9d5ff"}}>{t}</div>
+          </div>)}
+        </div>
+      </div>}
+
+      <div style={{textAlign:"center",padding:"14px",fontSize:"11px",color:"#334155",borderTop:"1px solid #1e293b"}}>
+        رحلة سعيدة ومباركة 🇻🇳❤️
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
